@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16
+    container_name: ecopoints-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ecopoints
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: ecopoints
+    ports:
+      - "5432:5432"
+    volumes:
+      - ecopoints-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ecopoints -d ecopoints"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  ecopoints-db-data:

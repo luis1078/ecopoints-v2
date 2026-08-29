@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+/* Modo oscuro controlado por la clase .dark en <html> (ver layout.tsx),
+   en vez de depender solo de prefers-color-scheme. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Paleta EcoPoints (heredada de la v1) */
+  --color-primary: #348e38;
+  --color-secondary: #277b73;
+  --color-light: #e8f5e9;
+  --color-dark: #0f4229;
+}
+
+/* Superficies del modo oscuro: variaciones de un mismo verde-negro en vez de
+   grises azulados, para que combinen con el verde de marca (primary/dark/light)
+   en lugar de competir con él. */
+.dark {
+  --background: #0b1410;
+  --foreground: #e8f5e9;
+}
+
+@theme {
+  --color-surface-900: #101d17;
+  --color-surface-800: #16261d;
+  --color-surface-700: #1f3527;
+  --color-surface-600: #2c4636;
+  --color-forest-700: #2a4032;
+  --color-forest-600: #3a5745;
+  --color-ink: #e8f5e9;
+  --color-ink-muted: #b9d4c0;
+  --color-ink-faint: #8fab97;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-light: var(--color-light);
+  --color-dark: var(--color-dark);
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-heading);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), "Open Sans", Arial, Helvetica, sans-serif;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+@layer components {
+  /* Superficie tipo tarjeta reutilizada en casi todas las vistas */
+  .surface-card {
+    @apply bg-white text-slate-900 shadow-[0_0_45px_rgba(0,0,0,0.08)]
+      dark:bg-surface-800 dark:text-ink dark:shadow-[0_0_45px_rgba(0,0,0,0.35)];
+  }
+  .surface-border {
+    @apply border-slate-200 dark:border-forest-700;
+  }
+  .text-muted {
+    @apply text-slate-500 dark:text-ink-faint;
+  }
+  .text-subtle {
+    @apply text-slate-600 dark:text-ink-muted;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading), "Jost", Arial, Helvetica, sans-serif;
+  font-weight: 600;
+}
+
+/* Header de página estilo v1: banner verde oscuro sobre imagen */
+.page-header {
+  position: relative;
+  background: linear-gradient(rgba(15, 66, 41, 0.75), rgba(15, 66, 41, 0.75)),
+    url("/img/carousel-1.jpg") center center no-repeat;
+  background-size: cover;
+}
+
+/* Tarjeta de misión: imagen + panel de texto, con hover oscuro (estilo v1 service-item) */
+.service-item {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.service-item .service-img {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.service-item .service-img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.2);
+  transition: transform 0.3s;
+}
+
+.service-item:hover .service-img img {
+  transform: scale(1);
+}
+
+.service-item .service-text {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  box-shadow: 0 0 45px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s;
+}
+
+.dark .service-item .service-text {
+  background: #16261d;
+  box-shadow: 0 0 45px rgba(0, 0, 0, 0.35);
+}
+
+.service-item:hover .service-text,
+.dark .service-item:hover .service-text {
+  background: rgba(15, 66, 41, 0.85);
+}
+
+.service-item .service-text h4,
+.service-item .service-text p,
+.service-item .service-text h6 {
+  transition: color 0.3s;
+}
+
+.service-item:hover .service-text h4,
+.service-item:hover .service-text h6 {
+  color: #ffffff;
+}
+
+.service-item:hover .service-text p {
+  color: var(--color-light);
+}
+
+/* Tarjeta de recompensa: imagen con overlay verde al hover (estilo v1 portfolio-inner) */
+.portfolio-inner {
+  position: relative;
+  overflow: hidden;
+}
+
+.portfolio-inner img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+.portfolio-inner .portfolio-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(15, 66, 41, 0.88);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.portfolio-inner:hover .portfolio-text {
+  opacity: 1;
+}
+
+/* Fondo de las páginas de login / registro */
+.login-register-page {
+  background-image: url("/img/loginbackground.gif");
+  background-color: #cccccc;
+  min-height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.login-register-form {
+  background-color: rgba(15, 66, 41, 0.45);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+}

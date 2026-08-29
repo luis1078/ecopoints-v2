@@ -73,6 +73,7 @@ app.MapRegister();
 app.MapLogin();
 
 app.MapListarMisiones();
+app.MapObtenerMision();
 app.MapCrearMision();
 app.MapValidarCodigo();
 
@@ -82,6 +83,7 @@ app.MapMiSaldo();
 app.MapListarRecompensas();
 app.MapCrearRecompensa();
 app.MapCanjearRecompensa();
+app.MapMisCanjes();
 
 app.Run();
 
